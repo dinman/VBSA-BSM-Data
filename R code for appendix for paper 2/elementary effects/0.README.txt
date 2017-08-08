@@ -1,0 +1,146 @@
+Elementary Effects README, 12/21/15
+      Supplementary Materials for Bush et al. 2016, Sensitivity Analysis of a Large Model: Application of Variance-Based Sensitivity Analysis to the Biomass Scenario Model,
+ System Dynamic Review ********
+
+======================================================================================================================================================================
+README
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  GENERAL INFORMATION
+          - Within the following directory, all necessary materials needed for replicating our published elementary effects results can be found
+          - It is important to note that these materials have been compiled for reproducibility, not adaptability. If adaptability is desired, input datasets must be
+            formatted exactly the same as the datasets provided in these supplementary materials (~/elementary effects/inputs/testdesign.xlsx).
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  FILE STUCTURE
+          - All executable files are located in the main elementary effects root directory (~"/elementary effects/") and are numerically labeled in the order in which
+            they must be executed. In other words, in order to reproduce the same results, one must first run the "1.studydesign.R", followed by
+            "2.Study77 EE analysis.R".
+          - Aside for the executable R files and the README.txt, all inputs, outputs, and source code that are referenced or generated in the executable code are
+            stored within their own subdirectories. The subdirectories are as follows:
+                Source Code: "~/elementary effects/source_code/"
+                Outputs: "~/elementary effects/outputs/"
+                Inputs: "~/elementary effects/inputs/"
+          - Upon download, the outputs subdirectory is empty, and only when the executable code is run, will files begin to populate this directory.
+          - Furthermore, the authors have provided their output files as a reference source to ensure that user generated outputs align with the authors' published
+            results. These example output files are located in the "~/elementary effects/example_outputs/" subdirectory.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  EXECUTABLE CODE
+          - There are two executable scripts located within the root folder ("~/elementary effects/")--namely, 1) study design, and 2) elementary effects analysis.
+          - There is a clear sequence in which these executable scripts should be executed, whereby each script is prefaced with a numeric label indicating the
+            execution order.
+          - All referenced source code, inputs, and outputs utilized by the executable code are all stored within their unique subdirectories.
+          - Detailed below are the specifics related to each executable:
+
+                  1. Study Design
+                      File Path:  "~/elementary effects/1.studydesign.R"
+                      Description:  This code generates the model design and the BSM inputs used for Study 75, Q4 FY 15 sensitivity study.
+                      Inputs: There is only 1 input:
+                              1. "~/inputs/testdesign.xlsx"
+                                  Note: To replicate this study with different input data, the desired input data must be formatted in the same way as the
+                                        testdesign.xlsx file
+                      Outputs:  There are four file outputs, but only two general types of outputs--1) the model design, and 2) BSM inputs:
+                              1) the model design
+                                  1. design.Rdata -- The statistical model design
+                              2) the BSM inputs - Saved to 3 different file formats
+                                  2. SS_inputs.txt -- BSM inputs, txt format
+                                  3. SS_inputs.csv -- BSM inputs, csv format
+                                  4. Study77design.RData -- BSM inputs, RData format
+                              All outputs are saved to the "~/outputs/" directory
+                      Source Code:  None
+                      Author & Date: Danny Inman, June 2 2015
+                      Other Information:  In order to reproduce the same results, adjust the paths of the working directory and R library.
+
+                  2. Elementary Effects Analysis
+                        File Path:  "~/elementary effects/1.Study 77 EE Analysis.R"
+                        Description:  This code takes the outputs from the BSM and the statistical design and runs the elementary effects analysis.We used elementary effects
+					as a filter from which we selected model factors to be passed on to the total effects analysis.
+                                      1) EE was performed on biofuel production in 2030: total biofuel production, cellulosic ethanol production, and biomass-based hydocarbon production.
+                                      2) I removed the upper settings for the policy durations (12, 16, 20yrs) and then reran the EE as listed in item (1)
+                                      3) EE was performed for maximum biofuel production for total, etoh, and hc
+                                      4) see point 2 above, applied to 3
+                        Inputs:  There are three inputs:
+                                    1. "~/inputs/testdesign.xlsx" -- This spreadsheet has the model factors and ranges for the BSM. It is used in both the EE and TE study design.
+                                    2. "~/outputs/design.xlsx" -- This is the morris study design generated in 1.studydesign.R
+                                    3. "~/inputs/study77out" -- This is the output from the BSM Model run (ran indepently from R) 
+                        Outputs:  Statistical outputs for the Elementary Effects Analysis are saved to "~/elementary effects/outputs" directory
+                                There are 9 total output files generated:
+                                    1. vars.RData -- list of variables from "/inputs/testdesign.xlsx"
+                                    2. study77results.RData -- results from the BSM, formatted in R*
+                                    3. EE2035EtOHMax.csv -- maximum cellulosic ethanol production prior to 2035
+                                    4. EE2035RRMax.csv -- maximum cellulosic hydrocarbon production prior to 2035
+                                    5. EE2035TotalMax.csv -- maximum total biofuel production prior to 2035
+                                    6. EE2051EtOHMax.csv -- maximum cellulosic ethanol production prior to 2051
+                                    7. EE2051RRMax.csv -- maximum cellulosic hydrocarbon production prior to 2051
+                                    8. EE2051TotalMax.csv -- maximum total biofuel production prior to 2051
+                                    
+                                Examples of Outputs Generated are located in "~/outputs/output_examples" directory
+                        Source Code:  This script utilizes the following source code:
+                                  1. "~/source_code/sens.functions.R"
+                                  2. "~/source_code/load.R"
+                        Author & Date: Danny Inman, August 28, 2015
+                        Other Information:  In order to reproduce the same results, adjust the paths of the working directory and R library.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  SOURCE CODE
+      1. Load.R
+            Path: "~/elementary effects/source_code/load.R"
+            Description: This script loads all required packages.
+      2. Sens.Functions.R
+            Path: "~/elementary effects/source_code/sens.functions.R"
+            Description: This source code stores the Elementary Effects functions and the different sensitvity functions.
+                  - Two elementary effects functions and different methods for calculating sensitivity indices from reviewed source.
+                  - Sensitivity Measures for Sensi Index, Total Effects, complements of (k-2) order effects (S(-ij)^c),
+                     second order closed (S.ij.c) and second order (S.ij) effects
+                  - Based on:
+                     1) Saltelli, A. (2002). Making best use of model evaluations to
+                         compute sensitivity indices. Computer Physics Communications, (2), 280-297.
+                     2) Saltelli (2010) Variance based sensitivity analysis of model output. Design and estimator
+                         for the total sensitivity index
+                     3) Saltelli (2008) Global Sensitivity Analysis: The Primer
+                Parameters:
+                      1) Elementary Effects Functions (x, y, N, r)
+                        - x is *****
+                        - y is *****
+                        - N is *****
+                        - r is *****
+                      2) Sensitivity Functions (A,B,C,D)
+                        - A,B are vector of length N of output from matrices A and B
+                        - C and D are matrices of size N x k, made up of the output vectors from matrices Ci..k, Di..k
+                        ******* ARE THERE OTHER VARIABLES FOR EE FUNCTIONS *****
+                Functions:
+                    1. ee: performs elementary effects calculations
+                    2. ee.2: performs elementary effects calculations and includes diagnostics such as the standar error of the mean.
+                    3. get.sensitivity.A:  Using just A matrix for calculation of mean squared and variance of Y
+                    4. get.sensitivity.AB: Uses A and B matrices for calculation of mean squared and variance of Y for the first/second order effects
+                    5. get.sensitivity.Sal10:  Uses equation in Saltelli 2010 paper for first order and total effects
+                    6. get.sensitivity.new:  Uses total effects equation from Sal10, and first/second order equations from AB
+            Author: Paige Erspamer
+            Date: 07/18/2014
+
+======================================================================================================================================================================
+
+INSTALL
+    R version 3.2.0
+    Libraries to install include:
+          - sensitivity
+          - XLConnect
+          - dplyr
+          - plyr
+          - reshape2
+          - randtoolbox
+          - data.table
+
+======================================================================================================================================================================
+
+AUTHORS
+  Daniel Inman, **************************************
+
+======================================================================================================================================================================
+
+CONTACT
+    For any inquiries related to these supplemental documents, please contact Daniel Inman by email (Daniel.Inman@nrel.gov) or by phone (303)-384-6811.
+
+======================================================================================================================================================================
+
+THANKS
+   **************** Include here any acknowledgments you would like to make. *******************************
+
+======================================================================================================================================================================

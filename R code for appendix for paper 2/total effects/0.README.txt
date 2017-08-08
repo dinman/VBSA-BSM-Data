@@ -1,0 +1,142 @@
+Total Effects README, 12/21/15
+      Supplementary Materials for Bush et al. 2016, Sensitivity Analysis of a Large Model: Application of Variance-Based Sensitivity Analysis to the Biomass Scenario Model, System Dynamic Review ********
+
+======================================================================================================================================================================
+README
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  GENERAL INFORMATION
+          - *** Please include any important information here ****
+          - Within the following directory, all necessary materials needed for replicating our published total effects results can be found.
+          - It is important to note that these materials have been compiled for reproducibility, not adaptability. If adaptability is desired, input datasets must be
+            formatted exactly the same as the datasets provided in these supplementary materials (~/total effects/inputs/). ***
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  FILE STUCTURE
+          - All executable files are located in the main total effects root directory (~"/total effects/") and are numerically labeled in the order in which they must
+            be executed. In other words, in order to reproduce the same results, one must first run the "1.study.1001.design.R", followed by "2.study.1001.analysis.R
+          - Aside for the executable R files and the README.txt, all inputs, outputs, and source code that are referenced or generated in the executable code are
+            stored within their own subdirectories. The subdirectories are as follows:
+                Source Code: "~/total effects/source_code/"
+                Outputs: "~/total effects/outputs/"
+                Inputs: "~/total effects/inputs/"
+          - Upon download, the outputs subdirectory is empty, and only when the executable code is run, will files begin to populate this directory.
+          - Furthermore, the authors have provided their output files as a reference source to ensure that user generated outputs align with the authors' published
+            results. These example output files are located in the "~/total effects/example_outputs/" subdirectory.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  EXECUTABLE CODE
+          - There are two executable scripts located within the root folder ("~/total effects/")--namely, 1) study design, and 2) total effects analysis.
+          - There is a clear sequence in which these executable scripts should be executed, whereby each script is prefaced with a numeric label indicating the
+            execution order.
+          - All referenced source code, inputs, and outputs utilized by the executable code are all stored within their unique subdirectories.
+          - Detailed below are the specifics related to each executable:
+
+                  1. Study Design
+                      File Path:  "~/total effects/1.study.1001.design.R"
+                      Description:  This code generates the BSM inputs (Sobol design) used in this study.
+                      Inputs: There are two inputs:
+                              1. factors071715.xlsx -- This is the factor names being passed to the total effects study.
+                              2. modelsettings.xlsx -- This is a spreadsheet of the BSM factors and thier ranges. It is used to generate the study design.
+                              Note: To replicate this study with different input data, the desired input data must be formatted in the same way as the
+                                    factors071715.xlsx file and the modelsettings.xlsx file
+                      Outputs:  There two outputs generated:
+                              1. study.1001.design.RDA -- This is the study design with policy durations.
+                              2. study.1001.design.ends.RDA -- This is the study design with the policy end-years, taken from the durations.
+                              All outputs are saved to the "~/outputs/" directory
+                      Source Code:  None
+                      Author & Date: Danny Inman, 08/25/2015
+                      Other Information:  In order to reproduce the same results, adjust the paths of the working directory and R library.
+
+                  2. Total Effects Analysis
+                        File Path:  "~/total effects/1.study.1001.analysis.R"
+                        Description:  This code generates the total Effects, First, and Second Order indices and then produces plots for all factors.
+                                      Based on Saltelli, A. (2002). Making best use of model evaluations to compute sensitivity indices. Computer Physics
+                                      Communications, (2), 280-297.
+                        Inputs:  There are two inputs:
+                                    1. "~/inputs/study.1001.total.2035.Rdata" -- DESCRIPTION HERE ********
+                                    2. "~/outputs/study.1001.design.RDA" -- DESCRIPTION HERE ********
+                        Outputs:  There are 9 files and two types of outputs generated:
+                                    A. Tabular Outputs:
+                                        1. "~/outputs/total.2035.sensitivity.results.RDA" -- DESCRIPTION HERE ********
+                                    B. Figure Outputs:
+                                        1. Total.2035.histogram.png -- Total Effects histogram for study 1001, year 2035
+                                        2. Total.2035.Si.boot.png -- Total Effects bootstrap sentitivity indicies for study 1001, year 2035
+                                        3. Total.2035.Si.png -- Total Effects sentitivity indicies for study 1001, year 2035
+                                        4. Total.2035.Sij.boot.png -- Total Effects bootstrap second order sentitivity indicies for study 1001, year 2035
+                                        5. Total.2035.Sij.png -- Total Effects second order sentitivity indicies for study 1001, year 2035
+                                        6. Total.2035.Sijc.boot.png -- Total Effects bootsrap closed second order sensitivity indicies for study 1001, year 2035
+                                        7. total.2035.Sti.boot.png -- Total Effects png total sentitivity indicies for study 1001, year 2035
+                                        8. Total.2035.Sti.png -- Total Effects total sentitivity indicies for study 1001, year 2035
+                                    All figures are saved in the "~/outputs/figures" directory
+                                    Examples of Outputs Generated are located in "~/outputs/output_examples" directory
+                        Source Code:  This script utilizes the following source code:
+                                  1. "~/source_code/sens.functions.R"  -- DESCRIPTION HERE ********
+                                  2. "~/source_code/load.R"  -- DESCRIPTION HERE ********
+                        Author & Date: Danny Inman, August 28, 2015
+                        Other Information:  In order to reproduce the same results, adjust the paths of the working directory and R library.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  SOURCE CODE
+      1. Load.R
+            Path: "~/total effects/source_code/load.R"
+            Description: This script loads all required packages.
+      2. Sens.Functions.R
+            Path: "~/total effects/source_code/sens.functions.R"
+            Description: This source code stores the Elementary Effects functions and the different sensitvity functions.
+                  - Two elementary effects functions and different methods for calculating sensitivity indices from reviewed source.
+                  - Sensitivity Measures for Sensi Index, Total Effects, complements of (k-2) order effects (S(-ij)^c),
+                     second order closed (S.ij.c) and second order (S.ij) effects
+                  - Based on:
+                     1) Saltelli, A. (2002). Making best use of model evaluations to
+                         compute sensitivity indices. Computer Physics Communications, (2), 280-297.
+                     2) Saltelli (2010) Variance based sensitivity analysis of model output. Design and estimator
+                         for the total sensitivity index
+                     3) Saltelli (2008) Global Sensitivity Analysis: The Primer
+                Parameters:
+                      1) Elementary Effects Functions (x, y, N, r)
+                        - x is *****
+                        - y is *****
+                        - N is *****
+                        - r is *****
+                      2) Sensitivity Functions (A,B,C,D)
+                        - A,B are vector of length N of output from matrices A and B
+                        - C and D are matrices of size N x k, made up of the output vectors from matrices Ci..k, Di..k
+                        ******* ARE THERE OTHER VARIABLES FOR EE FUNCTIONS *****
+                Functions:
+                    1. ee: ****DESCRIPTION HERE *****
+                    2. ee.2: ****DESCRIPTION HERE *****
+                    3. get.sensitivity.A:  Using just A matrix for calculation of mean squared and variance of Y
+                    4. get.sensitivity.AB: Uses A and B matrices for calculation of mean squared and variance of Y for the first/second order effects
+                    5. get.sensitivity.Sal10:  Uses equation in Saltelli 2010 paper for first order and total effects
+                    6. get.sensitivity.new:  Uses total effects equation from Sal10, and first/second order equations from AB
+            Author: Paige Erspamer
+            Date: 07/18/2014
+
+======================================================================================================================================================================
+
+INSTALL
+    R version 3.2.0
+    Libraries to install include:
+          - sensitivity
+          - XLConnect
+          - dplyr
+          - plyr
+          - reshape2
+          - randtoolbox
+          - data.table
+          - ggplot2
+          - grid
+
+======================================================================================================================================================================
+
+AUTHORS
+  Daniel Inman, **************************************
+
+======================================================================================================================================================================
+
+CONTACT
+    For any inquiries related to these supplemental documents, please contact Daniel Inman by email (Daniel.Inman@nrel.gov) or by phone (303)-384-6811.
+
+======================================================================================================================================================================
+
+THANKS
+   **************** Include here any acknowledgments you would like to make. *******************************
+
+======================================================================================================================================================================
